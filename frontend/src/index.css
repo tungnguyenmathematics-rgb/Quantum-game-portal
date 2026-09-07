@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #020617;
+  background-image:
+    radial-gradient(circle at 15% 50%, rgba(34, 211, 238, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(217, 70, 239, 0.05) 0%, transparent 50%);
+  min-height: 100vh;
+}
+
+.neon-text-cyan { color: #22d3ee; text-shadow: 0 0 5px rgba(34,211,238,.5), 0 0 15px rgba(34,211,238,.3); }
+.neon-text-fuchsia { color: #d946ef; text-shadow: 0 0 5px rgba(217,70,239,.5), 0 0 15px rgba(217,70,239,.3); }
+
+.neon-button {
+  background: rgba(34,211,238,.1);
+  border: 1px solid #22d3ee;
+  color: #22d3ee;
+  text-shadow: 0 0 5px rgba(34,211,238,.5);
+  box-shadow: 0 0 10px rgba(34,211,238,.3), inset 0 0 5px rgba(34,211,238,.2);
+  transition: all .2s ease;
+}
+.neon-button:hover { background: #22d3ee; color: #020617; text-shadow: none; box-shadow: 0 0 20px rgba(34,211,238,.8); }
+
+.neon-button-fuchsia {
+  background: rgba(217,70,239,.1);
+  border: 1px solid #d946ef;
+  color: #d946ef;
+  text-shadow: 0 0 5px rgba(217,70,239,.5);
+  box-shadow: 0 0 10px rgba(217,70,239,.3), inset 0 0 5px rgba(217,70,239,.2);
+  transition: all .2s ease;
+}
+.neon-button-fuchsia:hover { background: #d946ef; color: #020617; text-shadow: none; box-shadow: 0 0 20px rgba(217,70,239,.8); }
+
+.input-dark {
+  background: rgba(15,23,42,.6);
+  border: 1px solid #334155;
+  color: #e2e8f0;
+}
+.input-dark:focus { border-color: #22d3ee; box-shadow: 0 0 10px rgba(34,211,238,.3); outline: none; }
+
+.card-glow {
+  background: rgba(15,23,42,.7);
+  border: 1px solid #1e293b;
+  transition: all .2s ease;
+}
+.card-glow:hover { border-color: #22d3ee; box-shadow: 0 0 20px rgba(34,211,238,.25); transform: translateY(-2px); }
