@@ -66,12 +66,11 @@ npm run dev               # chạy tại http://localhost:5173, tự proxy /api 
 Mở `http://localhost:5173` để dùng giao diện; API và Socket.IO tự động được proxy
 tới backend tại cổng 4000 (xem `frontend/vite.config.js`).
 
-### 3. Build & chạy như production (1 service duy nhất)
+### 3. Build & chạy như production (1 service duy nhất — đúng như Render sẽ chạy)
 
 ```bash
-cd frontend && npm run build
-cd ../backend && rm -rf public && cp -r ../frontend/dist public
-npm start
+bash build.sh   # build React + cài backend + copy dist vào backend/public
+bash start.sh   # seed admin rồi khởi động server
 ```
 
 Giờ mở `http://localhost:4000` — backend vừa phục vụ API vừa phục vụ giao diện React.
@@ -99,6 +98,20 @@ bằng bcrypt trước khi ghi vào SQLite. File `.env.example` có sẵn 2 giá
 
 ## Deploy lên Render
 
+⚠️ **Lưu ý về gói Free**: bản `render.yaml` này dùng `plan: free` để bạn deploy được
+ngay mà không cần nhập thẻ. Đánh đổi:
+- Free tier **không hỗ trợ ổ đĩa bền (disk)**, nên file SQLite (`backend/data/`) và
+  ảnh upload (`backend/uploads/`) sẽ **mất sạch mỗi khi service build lại** (redeploy,
+  hoặc mỗi lần bạn push code mới).
+- Free tier tự "ngủ" sau ~15 phút không có traffic, request đầu tiên sau khi ngủ sẽ
+  chậm (cold start ~30-60s).
+- Muốn dữ liệu bền vững + không bị sleep, cần nâng lên gói trả phí (`plan: starter`)
+  và thêm lại phần `disk:` — lúc đó Render mới bắt buộc nhập thẻ thanh toán.
+
+Nếu muốn dùng Free nhưng vẫn giữ dữ liệu không mất, cách tốt hơn là đổi từ SQLite sang
+một database ngoài miễn phí (ví dụ Render Postgres Free tier, hoặc Supabase/Neon) —
+nói mình biết nếu bạn muốn chuyển sang hướng đó.
+
 1. Đẩy thư mục này lên một Git repo (GitHub/GitLab).
 2. Trên Render: **New → Blueprint**, trỏ vào repo, Render sẽ đọc `render.yaml` và tự
    tạo 1 Web Service.
@@ -107,9 +120,9 @@ bằng bcrypt trước khi ghi vào SQLite. File `.env.example` có sẵn 2 giá
 4. Deploy. `buildCommand` sẽ build React rồi copy `dist/` vào `backend/public`;
    `startCommand` sẽ chạy `seed:admin` (an toàn để chạy lại nhiều lần) rồi khởi động
    server.
-5. Ổ đĩa bền (`/data`, 1GB) được gắn để file SQLite và ảnh upload không mất sau mỗi lần
-   redeploy. Muốn dùng Postgres thay vì SQLite khi lượng dữ liệu lớn hơn, hãy nói để
-   mình chuyển sang `pg` + Render Postgres.
+5. Vì dùng gói Free, dữ liệu (SQLite + ảnh upload) sẽ không tồn tại lâu dài — xem cảnh
+   báo phía trên. Muốn ổ đĩa bền hoặc không bị sleep, cần nâng cấp `plan` trong
+   `render.yaml` lên `starter` (lúc đó Render mới yêu cầu thẻ thanh toán).
 
 ## Cách một game tích hợp tính năng portal
 
